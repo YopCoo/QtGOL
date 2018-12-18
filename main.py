@@ -1,38 +1,30 @@
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import QTimer, Qt
-from PyQt5.QtGui import QPen, QBrush
+from PyQt5.Qt import Qt, QColor, QTimer
 from mainwindow import Ui_MainWindow
 from Board import Board
 from GolGraphicScene import GolGraphicScene
+from UserContext import UserContext
+
 
 class MainWindow(QMainWindow, Ui_MainWindow):
-
 
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
 
-        pen = QPen(Qt.black)
-        self.active_color = QBrush(Qt.yellow)
-        self.active_color.setStyle(Qt.SolidPattern)
-        self.inactive_color = QBrush()
-        self.inactive_color.setStyle(0)
-
+        self.config = UserContext()
         self.start = False
-        self.board = Board(10, 10, 0.3)
-        self.pixels = {}
+        self.board = Board(self.config.x_cell, self.config.y_cell, self.config.density)
 
         self.setupUi(self)
-        self.scene = GolGraphicScene(self.board)
-        self.scene.setBackgroundBrush(Qt.gray)
+        self.scene = GolGraphicScene(self.board, self.config)
+        self.scene.setBackgroundBrush(self.config.inactive_color)
         self.canvas.setScene(self.scene)
-        self.canvas.setFixedWidth(60*10)
-        self.canvas.setFixedHeight(60*10)
-        for cell in self.board.cells:
-            brush = self.active_color if cell.state else self.inactive_color
-            self.pixels['#'+str(cell.c_x)+'#'+str(cell.c_y)] = self.scene.addRect(10*cell.c_x,10*cell.c_y,10,10, pen, brush)
+        self.canvas.setFixedWidth(self.config.x_cell*self.config.size_cell)
+        self.canvas.setFixedHeight(self.config.y_cell*self.config.size_cell)
 
         self.bt_quit.clicked.connect(self.close)
         self.bt_start.clicked.connect(self.toggle_start)
+
         self.timer = QTimer()
         self.timer.setInterval(150)
         self.timer.timeout.connect(self.refresh)
@@ -43,8 +35,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.start:
             self.board.nextgen()
             for cell in self.board.cells:
-                brush = self.active_color if cell.state else self.inactive_color
-                self.pixels['#' + str(cell.c_x) + '#' + str(cell.c_y)].setBrush(brush)
+                if cell.state:
+                    self.scene.setActiveCell(cell.c_x,cell.c_y)
+                else:
+                    self.scene.setInativeCell(cell.c_x, cell.c_y)
 
     def toggle_start(self):
         self.start = False if self.start else True
@@ -56,8 +50,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         origin_state = self.start
         self.start = False
         msgBox = QMessageBox()
-        msgBox.setText("Question?")
-        msgBox.setInformativeText("Do you want to quit?")
+        msgBox.setWindowTitle("Question?")
+        msgBox.setText("Do you want to quit?")
         msgBox.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         ret = msgBox.exec_()
         if ret == QMessageBox.Yes:
@@ -65,6 +59,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             self.start = origin_state
 
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Space:
+            self.toggle_start()
+        if event.modifiers() == Qt.ControlModifier and event.key() == Qt.Key_C:
+            self.close()
 
 if __name__ == '__main__':
     app = QApplication([])
