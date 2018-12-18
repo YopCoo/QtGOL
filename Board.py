@@ -7,16 +7,17 @@ class Board:
     LIFE =  [0,0,1,1,0,0,0,0,0,0]
     DEATH = [0,0,0,1,0,0,0,0,0,0]
 
-    def __init__(self, size_x, size_y, tolerance=0.7, init=Generator.Random):
+    def __init__(self, size_x, size_y, density=0.7, init=Generator.Random):
         self.SIZE_X = size_x
         self.SIZE_Y = size_y
         self.cells = []
         self.init = init
+        self.density = density
 
         for x in range(self.SIZE_X):
             for y in range(self.SIZE_Y):
                 if self.init == Generator.Random:
-                    cell = Cell(x, y, random() < tolerance)
+                    cell = Cell(x, y, random() < self.density)
                 if self.init == Generator.Blank:
                     cell = Cell(x, y, False)
                 self.cells.append(cell)
@@ -39,6 +40,13 @@ class Board:
 
         for cell in self.cells:
             cell.state = cell.nextState
+
+    def autogen(self):
+        for cell in self.cells:
+            if random() < self.density :
+                cell.state = True
+            else:
+                cell.state = False
 
 
     def __str__(self):

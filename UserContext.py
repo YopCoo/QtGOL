@@ -13,6 +13,8 @@ class UserContext():
                 self.y_cell = int(val)
             elif "DENSITY" == key:
                 self.density = float(val)
+            elif "SPEED" == key:
+                self.speed = int(val)
             elif "SIZECELL" == key:
                 self.size_cell = int(val)
             elif "INACTIVE_COLOR" == key:

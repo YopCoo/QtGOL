@@ -29,6 +29,16 @@
          <attribute name="title">
           <string>Stable</string>
          </attribute>
+         <widget class="QLCDNumber" name="lcdNumber">
+          <property name="geometry">
+           <rect>
+            <x>220</x>
+            <y>260</y>
+            <width>64</width>
+            <height>23</height>
+           </rect>
+          </property>
+         </widget>
         </widget>
         <widget class="QWidget" name="tab_period">
          <attribute name="title">
@@ -48,7 +58,7 @@
          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
         </property>
         <item row="0" column="1">
-         <widget class="QSpinBox" name="spinBox"/>
+         <widget class="QSpinBox" name="sb_xcell"/>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="lb_y_cells">
@@ -58,7 +68,7 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QSpinBox" name="spinBox_2"/>
+         <widget class="QSpinBox" name="sb_ycell"/>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="lb_cell_size">
@@ -68,7 +78,7 @@
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="QSpinBox" name="spinBox_3"/>
+         <widget class="QSpinBox" name="sb_sizecell"/>
         </item>
         <item row="3" column="0">
          <widget class="QLabel" name="lb_speed">
@@ -78,9 +88,27 @@
          </widget>
         </item>
         <item row="3" column="1">
-         <widget class="QSlider" name="horizontalSlider">
+         <widget class="QSlider" name="sl_speed">
+          <property name="minimum">
+           <number>50</number>
+          </property>
+          <property name="maximum">
+           <number>1000</number>
+          </property>
+          <property name="singleStep">
+           <number>1</number>
+          </property>
+          <property name="tracking">
+           <bool>false</bool>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="invertedAppearance">
+           <bool>false</bool>
+          </property>
+          <property name="invertedControls">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -145,8 +173,15 @@
        </spacer>
       </item>
       <item row="2" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="2" column="2">
+         <widget class="QPushButton" name="bt_quit">
+          <property name="text">
+           <string>Quit</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
          <widget class="QPushButton" name="bt_start">
           <property name="text">
            <string>Start / Pause</string>
@@ -162,17 +197,17 @@
           </property>
          </widget>
         </item>
-        <item>
+        <item row="1" column="2">
          <widget class="QPushButton" name="bt_reset">
           <property name="text">
            <string>Reset</string>
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="QPushButton" name="bt_quit">
+        <item row="1" column="1">
+         <widget class="QPushButton" name="bt_autogen">
           <property name="text">
-           <string>Quit</string>
+           <string>Gen Auto</string>
           </property>
          </widget>
         </item>
@@ -184,5 +219,22 @@
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>sl_speed</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lcdNumber</receiver>
+   <slot>display(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>730</x>
+     <y>451</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>723</x>
+     <y>305</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
