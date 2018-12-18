@@ -20,11 +20,6 @@ class Board:
                 if self.init == Generator.Blank:
                     cell = Cell(x, y, False)
                 self.cells.append(cell)
-        # list(filter(lambda c: c.c_x == 2 and c.c_y == 2, self.cells)).__getitem__(0).__setattr__("state", True)
-        # list(filter(lambda c: c.c_x == 2 and c.c_y == 1, self.cells)).__getitem__(0).__setattr__("state", True)
-        # list(filter(lambda c: c.c_x == 2 and c.c_y == 0, self.cells)).__getitem__(0).__setattr__("state", True)
-        # list(filter(lambda c: c.c_x == 1 and c.c_y == 2, self.cells)).__getitem__(0).__setattr__("state", True)
-        # list(filter(lambda c: c.c_x == 0 and c.c_y == 1, self.cells)).__getitem__(0).__setattr__("state", True)
 
         for cell in self.cells:
                 cell.loadneighbours(self)
