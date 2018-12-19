@@ -23,3 +23,6 @@ class UserContext():
             elif "ACTIVE_COLOR" == key:
                 rgb = val.split(',')
                 self.active_color = QColor.fromRgb(int(rgb[0].strip()), int(rgb[1].strip()), int(rgb[2].strip()))
+            elif "NEW_COLOR" == key:
+                rgb = val.split(',')
+                self.new_color = QColor.fromRgb(int(rgb[0].strip()), int(rgb[1].strip()), int(rgb[2].strip()))

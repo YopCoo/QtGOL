@@ -4,6 +4,7 @@ from mainwindow import Ui_MainWindow
 from Board import Board
 from GolGraphicScene import GolGraphicScene
 from UserContext import UserContext
+from StateCell import StateCell
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -47,9 +48,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def refresh(self):
         for cell in self.board.cells:
-            if cell.state:
+            if cell.state == StateCell.LIFE:
                 self.scene.setActiveCell(cell.c_x,cell.c_y)
-            else:
+            elif cell.state == StateCell.BORN:
+                self.scene.setNewCell(cell.c_x,cell.c_y)
+            elif cell.state == StateCell.DEATH:
                 self.scene.setInativeCell(cell.c_x, cell.c_y)
 
     def toggle_start(self):

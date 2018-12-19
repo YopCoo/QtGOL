@@ -1,6 +1,7 @@
 from Cell import Cell
 from random import random
 from Generator import Generator
+from StateCell import StateCell
 
 class Board:
 
@@ -16,10 +17,11 @@ class Board:
 
         for x in range(self.SIZE_X):
             for y in range(self.SIZE_Y):
+                cell = None
                 if self.init == Generator.Random:
-                    cell = Cell(x, y, random() < self.density)
+                    cell = Cell(x, y, StateCell.LIFE if random() < self.density else StateCell.DEATH)
                 if self.init == Generator.Blank:
-                    cell = Cell(x, y, False)
+                    cell = Cell(x, y, StateCell.DEATH)
                 self.cells.append(cell)
 
         for cell in self.cells:
@@ -33,10 +35,10 @@ class Board:
 
     def nextgen(self):
         for cell in self.cells:
-            if cell.state:
-                cell.nextState = self.LIFE[cell.cells_in_life()] == 1
+            if cell.state == StateCell.LIFE or cell.state == StateCell.BORN:
+                cell.nextState = StateCell.LIFE if self.LIFE[cell.cells_in_life()] == 1 else StateCell.DEATH
             else:
-                cell.nextState = self.DEATH[cell.cells_in_life()] == 1
+                cell.nextState = StateCell.BORN if self.DEATH[cell.cells_in_life()] == 1 else StateCell.DEATH
 
         for cell in self.cells:
             cell.state = cell.nextState
@@ -44,9 +46,9 @@ class Board:
     def autogen(self):
         for cell in self.cells:
             if random() < self.density :
-                cell.state = True
+                cell.state = StateCell.LIFE
             else:
-                cell.state = False
+                cell.state = StateCell.DEATH
 
 
     def __str__(self):
