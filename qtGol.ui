@@ -29,16 +29,6 @@
          <attribute name="title">
           <string>Stable</string>
          </attribute>
-         <widget class="QLCDNumber" name="lcdNumber">
-          <property name="geometry">
-           <rect>
-            <x>220</x>
-            <y>260</y>
-            <width>64</width>
-            <height>23</height>
-           </rect>
-          </property>
-         </widget>
         </widget>
         <widget class="QWidget" name="tab_period">
          <attribute name="title">
@@ -219,22 +209,5 @@
   </widget>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>sl_speed</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lcdNumber</receiver>
-   <slot>display(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>730</x>
-     <y>451</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>723</x>
-     <y>305</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

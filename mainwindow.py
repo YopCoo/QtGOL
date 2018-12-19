@@ -23,9 +23,6 @@ class Ui_MainWindow(object):
         self.tab_struc.setObjectName("tab_struc")
         self.tab_stable = QtWidgets.QWidget()
         self.tab_stable.setObjectName("tab_stable")
-        self.lcdNumber = QtWidgets.QLCDNumber(self.tab_stable)
-        self.lcdNumber.setGeometry(QtCore.QRect(220, 260, 64, 23))
-        self.lcdNumber.setObjectName("lcdNumber")
         self.tab_struc.addTab(self.tab_stable, "")
         self.tab_period = QtWidgets.QWidget()
         self.tab_period.setObjectName("tab_period")
@@ -104,7 +101,6 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.tab_struc.setCurrentIndex(0)
-        self.sl_speed.valueChanged['int'].connect(self.lcdNumber.display)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):

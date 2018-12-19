@@ -93,8 +93,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.refresh()
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Space:
+        if event.key() == Qt.Key_P:
             self.toggle_start()
+        if event.key() == Qt.Key_A:
+            self.autogen()
+        if event.key() == Qt.Key_B:
+            self.clean()
         if event.modifiers() == Qt.ControlModifier and event.key() == Qt.Key_C:
             self.close()
 
