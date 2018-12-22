@@ -19,7 +19,7 @@ class Board:
             for y in range(self.SIZE_Y):
                 cell = None
                 if self.init == Generator.Random:
-                    cell = Cell(x, y, StateCell.LIFE if random() < self.density else StateCell.DEATH)
+                    cell = Cell(x, y, StateCell.BORN if random() < self.density else StateCell.DEATH)
                 if self.init == Generator.Blank:
                     cell = Cell(x, y, StateCell.DEATH)
                 self.cells.append(cell)
@@ -28,7 +28,7 @@ class Board:
                 cell.loadneighbours(self)
 
     def neighbour(self, cell):
-        return list(filter(lambda c: c.state, cell.neighbours)).__len__()
+        return list(filter(lambda c: c.state == StateCell.BORN or c.state == StateCell.LIFE, cell.neighbours)).__len__()
 
     def getcelltocoord(self, x, y):
         return list(filter(lambda c: c.c_x == x and c.c_y == y, self.cells)).__getitem__(0)

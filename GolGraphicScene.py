@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QGraphicsScene, QMessageBox
 from PyQt5.Qt import QPen, Qt, QBrush
 from math import floor
 from StateCell import StateCell
+from Cell import Cell
 
 
 class GolGraphicScene(QGraphicsScene):
@@ -17,8 +18,8 @@ class GolGraphicScene(QGraphicsScene):
         self.inactive_color = QBrush()
         self.inactive_color.setStyle(0)
         self.pixels = {}
-        self.active_patern = []
-        self.import_patern = [[0, 0]]
+        self.actual_area = []
+        self.import_patern = [Cell(0,0,StateCell.BORN)]
         self.last_x_id = None
         self.last_y_id = None
 
@@ -39,12 +40,21 @@ class GolGraphicScene(QGraphicsScene):
 
     def mouseMoveEvent(self, event):
         super(GolGraphicScene, self).mouseMoveEvent(event)
-        x_id = floor(event.pos().x() / self.config.size_cell)
-        y_id = floor(event.pos().y() / self.config.size_cell)
+        x_id = floor(event.scenePos().x() / self.config.size_cell)
+        y_id = floor(event.scenePos().y() / self.config.size_cell)
         if self.last_x_id != x_id and self.last_y_id != y_id:
             self.last_x_id = x_id
             self.last_y_id = y_id
-            self.active_patern.append([x_id,y_id])
+
+            if self.actual_area.__len__() == 0:
+                for cell in self.import_patern:
+                    self.actual_area.append(self.pixels['#'+str(x_id+cell.c_x)+'#'+str(y_id+cell.c_y)])
+                    self.setActiveCell(x_id+cell.c_x,y_id+cell.c_y)
+            else:
+                pass
+
+
+
 
 
     def setActiveCell(self,x,y):
