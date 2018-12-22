@@ -95,6 +95,9 @@ class Ui_MainWindow(object):
         self.bt_autogen = QtWidgets.QPushButton(self.centralwidget)
         self.bt_autogen.setObjectName("bt_autogen")
         self.gridLayout_3.addWidget(self.bt_autogen, 1, 1, 1, 1)
+        self.bt_clean = QtWidgets.QPushButton(self.centralwidget)
+        self.bt_clean.setObjectName("bt_clean")
+        self.gridLayout_3.addWidget(self.bt_clean, 2, 1, 1, 1)
         self.gridLayout.addLayout(self.gridLayout_3, 2, 0, 1, 1)
         self.gridLayout_2.addLayout(self.gridLayout, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -117,4 +120,5 @@ class Ui_MainWindow(object):
         self.bt_start.setText(_translate("MainWindow", "Start / Pause"))
         self.bt_reset.setText(_translate("MainWindow", "Reset"))
         self.bt_autogen.setText(_translate("MainWindow", "Gen Auto"))
+        self.bt_clean.setText(_translate("MainWindow", "Clean"))
 
