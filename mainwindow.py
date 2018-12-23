@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(887, 470)
+        MainWindow.resize(887, 466)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.centralwidget)
@@ -55,11 +55,11 @@ class Ui_MainWindow(object):
         self.sl_speed = QtWidgets.QSlider(self.centralwidget)
         self.sl_speed.setMinimum(50)
         self.sl_speed.setMaximum(1000)
-        self.sl_speed.setSingleStep(1)
+        self.sl_speed.setSingleStep(10)
         self.sl_speed.setTracking(False)
         self.sl_speed.setOrientation(QtCore.Qt.Horizontal)
-        self.sl_speed.setInvertedAppearance(False)
-        self.sl_speed.setInvertedControls(False)
+        self.sl_speed.setInvertedAppearance(True)
+        self.sl_speed.setInvertedControls(True)
         self.sl_speed.setObjectName("sl_speed")
         self.formLayout.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.sl_speed)
         self.lb_x_cells = QtWidgets.QLabel(self.centralwidget)
