@@ -57,7 +57,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         pen.setWidth(10)
         if self.start:
             self.start = False
-            self.rect_statut = self.scene.addRect(0,0,self.self.config.x_cell*self.config.size_cell,self.config.y_cell*self.config.size_cell,pen)
+            self.rect_statut = self.scene.addRect(0,0,self.config.x_cell*self.config.size_cell,self.config.y_cell*self.config.size_cell,pen)
         else:
             self.start = True
             self.scene.removeItem(self.rect_statut)

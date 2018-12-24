@@ -18,7 +18,7 @@ class GolGraphicScene(QGraphicsScene):
         self.inactive_color = QBrush()
         self.inactive_color.setStyle(0)
         self.pixels = {}
-        self.actual_area = []
+        self.actual_area = {}
         self.import_patern = [Cell(0,0,StateCell.BORN)]
         self.last_x_id = None
         self.last_y_id = None
@@ -29,8 +29,8 @@ class GolGraphicScene(QGraphicsScene):
 
     def mousePressEvent(self, event):
         super(GolGraphicScene, self).mousePressEvent(event)
-        x_id = floor(event.pos().x() / self.config.size_cell)
-        y_id = floor(event.pos().y() / self.config.size_cell)
+        x_id = self.getPosId(event.scenePos().x())
+        y_id = self.getPosId(event.scenePos().y())
         if self.board.getcelltocoord(x_id, y_id).state == StateCell.LIFE or self.board.getcelltocoord(x_id, y_id).state == StateCell.BORN:
             self.board.getcelltocoord(x_id, y_id).state = StateCell.DEATH
             self.setInativeCell(x_id, y_id)
@@ -40,22 +40,25 @@ class GolGraphicScene(QGraphicsScene):
 
     def mouseMoveEvent(self, event):
         super(GolGraphicScene, self).mouseMoveEvent(event)
-        x_id = floor(event.scenePos().x() / self.config.size_cell)
-        y_id = floor(event.scenePos().y() / self.config.size_cell)
-        if self.last_x_id != x_id and self.last_y_id != y_id:
+        x_id = self.getPosId(event.scenePos().x())
+        y_id = self.getPosId(event.scenePos().y())
+        if self.last_x_id != x_id or self.last_y_id != y_id:
             self.last_x_id = x_id
             self.last_y_id = y_id
-
-            if self.actual_area.__len__() == 0:
-                for cell in self.import_patern:
-                    self.actual_area.append(self.pixels['#'+str(x_id+cell.c_x)+'#'+str(y_id+cell.c_y)])
-                    self.setActiveCell(x_id+cell.c_x,y_id+cell.c_y)
+            for cell in self.actual_area:
+                
+                pass
+            for cell in self.import_patern:
+                self.actual_area['#'+str(x_id+cell.c_x)+'#'+str(y_id+cell.c_y)] = self.pixels['#'+str(x_id+cell.c_x)+'#'+str(y_id+cell.c_y)]
+                self.setActiveCell(x_id+cell.c_x,y_id+cell.c_y)
             else:
                 pass
 
 
 
 
+    def getPosId(self,pos):
+        return floor(pos / self.config.size_cell)
 
     def setActiveCell(self,x,y):
         self.pixels['#' + str(x) + '#' + str(y)].setBrush(self.active_color)
