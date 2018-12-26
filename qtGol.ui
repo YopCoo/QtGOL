@@ -88,6 +88,9 @@
           <property name="singleStep">
            <number>10</number>
           </property>
+          <property name="pageStep">
+           <number>50</number>
+          </property>
           <property name="tracking">
            <bool>false</bool>
           </property>
@@ -99,6 +102,12 @@
           </property>
           <property name="invertedControls">
            <bool>true</bool>
+          </property>
+          <property name="tickPosition">
+           <enum>QSlider::TicksAbove</enum>
+          </property>
+          <property name="tickInterval">
+           <number>50</number>
           </property>
          </widget>
         </item>
