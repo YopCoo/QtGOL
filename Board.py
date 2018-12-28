@@ -46,7 +46,7 @@ class Board:
     def autogen(self):
         for cell in self.cells:
             if random() < self.density :
-                cell.state = StateCell.LIFE
+                cell.state = StateCell.BORN
             else:
                 cell.state = StateCell.DEATH
 

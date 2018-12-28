@@ -26,9 +26,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.bt_quit.clicked.connect(self.close)
         self.bt_start.clicked.connect(self.toggle_start)
         self.bt_reset.clicked.connect(self.onConfigChanged)
-        self.bt_clean.clicked.connect(self.clean)
+        self.bt_clean.clicked.connect(self.scene.clean)
         self.bt_autogen.clicked.connect(self.autogen)
-
         self.sb_xcell.setValue(self.config.x_cell)
         self.sb_ycell.setValue(self.config.y_cell)
         self.sb_sizecell.setValue(self.config.size_cell)
@@ -36,21 +35,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.sl_speed.setValue(self.config.speed)
         self.sl_speed.valueChanged.connect(self.onSpeedChange)
 
-
         self.timer = QTimer()
         self.timer.setInterval(self.config.speed)
         self.timer.timeout.connect(self.nextgen)
         self.timer.start()
         self.show()
-
-    def refreshScene(self):
-        for cell in self.board.cells:
-            if cell.state == StateCell.LIFE:
-                self.scene.setActiveCell(cell.c_x,cell.c_y)
-            elif cell.state == StateCell.BORN:
-                self.scene.setNewCell(cell.c_x,cell.c_y)
-            elif cell.state == StateCell.DEATH:
-                self.scene.setInativeCell(cell.c_x, cell.c_y)
 
     def toggle_start(self):
         pen = QPen(Qt.red)
@@ -75,10 +64,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             self.start = origin_state
 
-    def clean(self):
-        for cell in self.board.cells:
-            cell.state = False
-            self.scene.setInativeCell(cell.c_x, cell.c_y)
 
     def onSizeCellChange(self):
         self.config.size_cell = self.sb_sizecell.value()
@@ -89,7 +74,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def onSpeedChange(self):
         self.config.speed = self.sl_speed.value()
-        self._speed = self.sl_speed.value()
         self.timer.setInterval(self.sl_speed.value())
 
     def onConfigChanged(self):
@@ -100,12 +84,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def autogen(self):
         self.board.autogen()
-        self.refreshScene()
+        self.scene.refreshScene()
 
     def nextgen(self):
         if self.start:
             self.board.nextgen()
-            self.refreshScene()
+            self.scene.refreshScene()
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_P:
@@ -113,15 +97,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if event.key() == Qt.Key_A:
             self.autogen()
         if event.key() == Qt.Key_B:
-            self.clean()
+            self.scene.clean()
         if event.modifiers() == Qt.ControlModifier and event.key() == Qt.Key_C:
             self.close()
-
 
     def initBoard(self):
         self.board = Board(self.config.x_cell, self.config.y_cell, self.config.density)
         self.scene = GolGraphicScene(self.board, self.config)
         self.configScene()
+        self.scene.refreshScene()
 
     def configScene(self):
         self.scene.setBackgroundBrush(self.config.inactive_color)
