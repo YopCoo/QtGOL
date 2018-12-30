@@ -33,15 +33,14 @@ class GolGraphicScene(QGraphicsScene):
         x_id = self.getPosId(event.scenePos().x())
         y_id = self.getPosId(event.scenePos().y())
         for cell in self.import_patern:
-            if cell.state == StateCell.BORN:
-                self.board.getcelltocoord(x_id+cell.c_x, y_id+cell.c_y).state = StateCell.BORN
-                self.setNewCell(x_id+cell.c_x, y_id+cell.c_y)
-            elif cell.state == StateCell.LIFE:
-                self.board.getcelltocoord(x_id+cell.c_x, y_id+cell.c_y).state = StateCell.LIFE
-                self.setActiveCell(x_id+cell.c_x, y_id+cell.c_y)
-            elif cell.state == StateCell.DEATH:
-                self.board.getcelltocoord(x_id+cell.c_x, y_id+cell.c_y).state = StateCell.DEATH
-                self.setInativeCell(x_id+cell.c_x, y_id+cell.c_y)
+            if x_id + cell.c_x < self.board.SIZE_X \
+                    and y_id + cell.c_y < self.board.SIZE_Y \
+                    and x_id + cell.c_x >= 0 \
+                    and y_id + cell.c_y >= 0:
+                self.board.getcelltocoord(x_id+cell.c_x, y_id+cell.c_y).state = cell.state
+                self.board.getcelltocoord(x_id + cell.c_x, y_id + cell.c_y).nextState = cell.state
+        self.last_x_id = None
+        self.last_y_id = None
 
     def mouseMoveEvent(self, event):
         super(GolGraphicScene, self).mouseMoveEvent(event)
@@ -63,15 +62,43 @@ class GolGraphicScene(QGraphicsScene):
             self.last_y_id = y_id
             # Save actual area for new pattern
             for cell in self.import_patern:
-                self.actual_area.append(Cell(x_id + cell.c_x, y_id + cell.c_y, self.board.getcelltocoord(x_id + cell.c_x, y_id + cell.c_y).state))
+                if x_id+cell.c_x < self.board.SIZE_X \
+                        and y_id+cell.c_y < self.board.SIZE_Y \
+                        and x_id+cell.c_x >= 0 \
+                        and y_id+cell.c_y >= 0:
+                    self.actual_area.append(Cell(x_id + cell.c_x, y_id + cell.c_y, self.board.getcelltocoord(x_id + cell.c_x, y_id + cell.c_y).state))
             # Show pattern
             for cell in self.import_patern:
-                if cell.state == StateCell.BORN:
-                    self.setNewCell(x_id+cell.c_x, y_id+cell.c_y)
-                elif cell.state == StateCell.LIFE:
-                    self.setActiveCell(x_id+cell.c_x, y_id+cell.c_y)
-                elif cell.state == StateCell.DEATH:
-                    self.setInativeCell(x_id+cell.c_x, y_id+cell.c_y)
+                if x_id + cell.c_x < self.board.SIZE_X \
+                        and y_id + cell.c_y < self.board.SIZE_Y \
+                        and x_id + cell.c_x >= 0 \
+                        and y_id + cell.c_y >= 0:
+                    if cell.state == StateCell.BORN:
+                        self.setNewCell(x_id+cell.c_x, y_id+cell.c_y)
+                    elif cell.state == StateCell.LIFE:
+                        self.setActiveCell(x_id+cell.c_x, y_id+cell.c_y)
+                    elif cell.state == StateCell.DEATH:
+                        self.setInativeCell(x_id+cell.c_x, y_id+cell.c_y)
+        elif self.last_x_id != None or self.last_y_id != None:
+            # Show pattern
+            for cell in self.import_patern:
+                if x_id + cell.c_x < self.board.SIZE_X \
+                        and y_id + cell.c_y < self.board.SIZE_Y \
+                        and x_id + cell.c_x >= 0 \
+                        and y_id + cell.c_y >= 0:
+                    if cell.state == StateCell.BORN:
+                        self.setNewCell(x_id + cell.c_x, y_id + cell.c_y)
+                    elif cell.state == StateCell.LIFE:
+                        self.setActiveCell(x_id + cell.c_x, y_id + cell.c_y)
+                    elif cell.state == StateCell.DEATH:
+                        self.setInativeCell(x_id + cell.c_x, y_id + cell.c_y)
+
+    def focusOutEvent(self, event):
+        super(GolGraphicScene, self).focusOutEvent(event)
+        if event.reason() == Qt.MouseFocusReason:
+            self.last_x_id = None
+            self.last_y_id = None
+
 
     def getPosId(self,pos):
         return floor(pos / self.config.size_cell)
@@ -98,3 +125,7 @@ class GolGraphicScene(QGraphicsScene):
         for cell in self.board.cells:
             cell.state = StateCell.DEATH
             self.setInativeCell(cell.c_x, cell.c_y)
+
+    def setPattern(self,cells):
+        self.import_patern = cells.copy()
+

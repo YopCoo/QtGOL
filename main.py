@@ -4,7 +4,8 @@ from mainwindow import Ui_MainWindow
 from Board import Board
 from GolGraphicScene import GolGraphicScene
 from UserContext import UserContext
-from StateCell import StateCell
+from PatternFactory import PatternFactory
+
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -13,6 +14,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__(*args, **kwargs)
 
         self.config = UserContext()
+        self.patternFactory = PatternFactory()
 
         self.start = False
         self.board = None
@@ -20,14 +22,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.setupUi(self)
         self.scene = None
+        self.scenePreview = None
 
         self.initBoard()
+        self.initPreview()
 
         self.bt_quit.clicked.connect(self.close)
         self.bt_start.clicked.connect(self.toggle_start)
         self.bt_reset.clicked.connect(self.onConfigChanged)
-        self.bt_clean.clicked.connect(self.scene.clean)
+        self.bt_clean.clicked.connect(self.clean)
         self.bt_autogen.clicked.connect(self.autogen)
+        for name in self.patternFactory.staticPatterns.keys():
+            self.cb_staticPattern.addItem(name)
+        self.cb_staticPattern.activated.connect(lambda : self.scene.setPattern(self.patternFactory.staticPatterns[self.cb_staticPattern.currentText()]))
+        for name in self.patternFactory.periodicPatterns.keys():
+            self.cb_periodicPattern.addItem(name)
+        self.cb_periodicPattern.activated.connect(lambda : self.scene.setPattern(self.patternFactory.periodicPatterns[self.cb_periodicPattern.currentText()]))
+        for name in self.patternFactory.movingPatterns.keys():
+            self.cb_movingPattern.addItem(name)
+        self.cb_movingPattern.activated.connect(lambda : self.scene.setPattern(self.patternFactory.movingPatterns[self.cb_movingPattern.currentText()]))
         self.sb_xcell.setValue(self.config.x_cell)
         self.sb_ycell.setValue(self.config.y_cell)
         self.sb_sizecell.setValue(self.config.size_cell)
@@ -64,6 +77,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             self.start = origin_state
 
+    def clean(self):
+        self.scene.clean()
+        self.lcd_generation.display(0)
 
     def onSizeCellChange(self):
         self.config.size_cell = self.sb_sizecell.value()
@@ -80,16 +96,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.config.x_cell != self.sb_xcell.value() or self.config.y_cell != self.sb_ycell.value():
             self.config.x_cell = self.sb_xcell.value()
             self.config.y_cell = self.sb_ycell.value()
+            self.lcd_generation.display(0)
             self.initBoard()
 
     def autogen(self):
         self.board.autogen()
         self.scene.refreshScene()
+        self.lcd_generation.display(0)
 
     def nextgen(self):
         if self.start:
             self.board.nextgen()
             self.scene.refreshScene()
+            self.lcd_generation.display(self.lcd_generation.intValue() + 1)
+
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_P:
@@ -106,6 +126,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.scene = GolGraphicScene(self.board, self.config)
         self.configScene()
         self.scene.refreshScene()
+
+    def initPreview(self):
+        self.scenePreview = QGraphicsScene()
+        self.scenePreview.setBackgroundBrush(self.config.inactive_color)
+        self.gv_preview.setScene(self.scenePreview)
 
     def configScene(self):
         self.scene.setBackgroundBrush(self.config.inactive_color)

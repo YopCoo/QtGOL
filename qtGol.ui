@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>887</width>
-    <height>466</height>
+    <width>607</width>
+    <height>353</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,29 +20,74 @@
       <property name="sizeConstraint">
        <enum>QLayout::SetMaximumSize</enum>
       </property>
-      <item row="0" column="2">
-       <widget class="QTabWidget" name="tab_struc">
-        <property name="currentIndex">
-         <number>0</number>
+      <item row="0" column="0">
+       <widget class="QGraphicsView" name="canvas">
+        <property name="enabled">
+         <bool>true</bool>
         </property>
-        <widget class="QWidget" name="tab_stable">
-         <attribute name="title">
-          <string>Stable</string>
-         </attribute>
-        </widget>
-        <widget class="QWidget" name="tab_period">
-         <attribute name="title">
-          <string>Periodic</string>
-         </attribute>
-        </widget>
-        <widget class="QWidget" name="tab_spaceship">
-         <attribute name="title">
-          <string>Spaceship</string>
-         </attribute>
-        </widget>
+        <property name="cursor" stdset="0">
+         <cursorShape>CrossCursor</cursorShape>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
        </widget>
       </item>
-      <item row="2" column="2">
+      <item row="2" column="0">
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="2" column="2">
+         <widget class="QPushButton" name="bt_quit">
+          <property name="text">
+           <string>Quit</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QPushButton" name="bt_start">
+          <property name="text">
+           <string>Start / Pause</string>
+          </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
+          <property name="default">
+           <bool>false</bool>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QPushButton" name="bt_reset">
+          <property name="text">
+           <string>Reset</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QPushButton" name="bt_autogen">
+          <property name="text">
+           <string>Gen Auto</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QPushButton" name="bt_clean">
+          <property name="text">
+           <string>Clean</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="2" column="3">
        <layout class="QFormLayout" name="formLayout">
         <property name="fieldGrowthPolicy">
          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
@@ -136,26 +181,71 @@
         </property>
        </spacer>
       </item>
-      <item row="0" column="0">
-       <widget class="QGraphicsView" name="canvas">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="cursor" stdset="0">
-         <cursorShape>CrossCursor</cursorShape>
-        </property>
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-        <property name="verticalScrollBarPolicy">
-         <enum>Qt::ScrollBarAlwaysOff</enum>
-        </property>
-        <property name="horizontalScrollBarPolicy">
-         <enum>Qt::ScrollBarAlwaysOff</enum>
-        </property>
-       </widget>
+      <item row="0" column="3">
+       <layout class="QFormLayout" name="formLayout_2">
+        <item row="0" column="0">
+         <widget class="QLabel" name="lb_staticPattern">
+          <property name="text">
+           <string>Static Patterns</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="cb_staticPattern"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="lb_periodicPattern">
+          <property name="text">
+           <string>Periodic Pattern</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QComboBox" name="cb_periodicPattern"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="lb_movingPattern">
+          <property name="text">
+           <string>Moving Pattern</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="cb_movingPattern"/>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="lb_generation">
+          <property name="text">
+           <string># Generation</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLCDNumber" name="lcd_generation">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <property name="smallDecimalPoint">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0" colspan="2">
+         <widget class="QGraphicsView" name="gv_preview">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
-      <item row="0" column="1">
+      <item row="0" column="1" colspan="2">
        <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -170,54 +260,6 @@
          </size>
         </property>
        </spacer>
-      </item>
-      <item row="2" column="0">
-       <layout class="QGridLayout" name="gridLayout_3">
-        <item row="2" column="2">
-         <widget class="QPushButton" name="bt_quit">
-          <property name="text">
-           <string>Quit</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QPushButton" name="bt_start">
-          <property name="text">
-           <string>Start / Pause</string>
-          </property>
-          <property name="autoDefault">
-           <bool>false</bool>
-          </property>
-          <property name="default">
-           <bool>false</bool>
-          </property>
-          <property name="flat">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QPushButton" name="bt_reset">
-          <property name="text">
-           <string>Reset</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QPushButton" name="bt_autogen">
-          <property name="text">
-           <string>Gen Auto</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QPushButton" name="bt_clean">
-          <property name="text">
-           <string>Clean</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
       </item>
      </layout>
     </item>
