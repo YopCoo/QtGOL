@@ -1,10 +1,10 @@
 from PyQt5.QtWidgets import *
 from PyQt5.Qt import Qt, QPen, QTimer
-from mainwindow import Ui_MainWindow
-from Board import Board
-from GolGraphicScene import GolGraphicScene
-from UserContext import UserContext
-from PatternFactory import PatternFactory
+from ui.mainwindow import Ui_MainWindow
+from service.Board import Board
+from ui.GolGraphicScene import GolGraphicScene
+from service.UserContext import UserContext
+from service.PatternFactory import PatternFactory
 
 
 

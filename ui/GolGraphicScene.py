@@ -1,9 +1,8 @@
-from PyQt5.QtWidgets import QGraphicsScene, QMessageBox
+from PyQt5.QtWidgets import QGraphicsScene
 from PyQt5.Qt import QPen, Qt, QBrush
 from math import floor
-from StateCell import StateCell
-from Cell import Cell
-from copy import copy
+from model.StateCell import StateCell
+from model.Cell import Cell
 
 
 class GolGraphicScene(QGraphicsScene):

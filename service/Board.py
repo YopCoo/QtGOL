@@ -1,7 +1,7 @@
-from Cell import Cell
+from model.Cell import Cell
 from random import random
-from Generator import Generator
-from StateCell import StateCell
+from model.Generator import Generator
+from model.StateCell import StateCell
 
 class Board:
 

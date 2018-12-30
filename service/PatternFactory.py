@@ -1,5 +1,5 @@
-from Cell import Cell
-from StateCell import StateCell
+from model.Cell import Cell
+from model.StateCell import StateCell
 
 
 class PatternFactory():

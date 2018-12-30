@@ -1,4 +1,4 @@
-from StateCell import StateCell
+from model.StateCell import StateCell
 
 
 class Cell:
