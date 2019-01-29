@@ -5,13 +5,19 @@ from service.Board import Board
 from ui.GolGraphicScene import GolGraphicScene
 from service.UserContext import UserContext
 from service.PatternFactory import PatternFactory
+from service.ServicePattern import ServicePattern
+from util.Log import Log
 
 
+logger = Log().getLogger(__name__)
 
 class MainWindow(QMainWindow, Ui_MainWindow):
 
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
+        logger.info("Debut initialisation de la fenêtre principale.")
+        # Services
+        self.servicePattern = ServicePattern()
 
         self.config = UserContext()
         self.patternFactory = PatternFactory()
@@ -32,8 +38,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.bt_reset.clicked.connect(self.onConfigChanged)
         self.bt_clean.clicked.connect(self.clean)
         self.bt_autogen.clicked.connect(self.autogen)
-        for name in self.patternFactory.staticPatterns.keys():
-            self.cb_staticPattern.addItem(name)
+        for name in self.servicePattern.getNamesByCategory("STATIC"):
+            self.cb_staticPattern.addItem(name[0])
         self.cb_staticPattern.activated.connect(lambda : self.scene.setPattern(self.patternFactory.staticPatterns[self.cb_staticPattern.currentText()]))
         for name in self.patternFactory.periodicPatterns.keys():
             self.cb_periodicPattern.addItem(name)
@@ -53,6 +59,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.timer.timeout.connect(self.nextgen)
         self.timer.start()
         self.show()
+        logger.info("Fin initialisation de la fenêtre principale.")
 
     def toggle_start(self):
         pen = QPen(Qt.red)
