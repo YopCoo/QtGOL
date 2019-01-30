@@ -1,11 +1,10 @@
 from PyQt5.QtWidgets import *
 from PyQt5.Qt import Qt, QPen, QTimer
 from ui.mainwindow import Ui_MainWindow
-from service.Board import Board
+from model.Board import Board
 from ui.GolGraphicScene import GolGraphicScene
-from service.UserContext import UserContext
-from service.PatternFactory import PatternFactory
 from service.ServicePattern import ServicePattern
+from service.ServiceUserContext import ServiceUserContext
 from util.Log import Log
 
 
@@ -18,9 +17,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         logger.info("Debut initialisation de la fenêtre principale.")
         # Services
         self.servicePattern = ServicePattern()
-
-        self.config = UserContext()
-        self.patternFactory = PatternFactory()
+        self.serviceUserContext = ServiceUserContext()
+        self.config = self.serviceUserContext.getUserContext("DEFAUT")
 
         self.start = False
         self.board = None
@@ -39,14 +37,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.bt_clean.clicked.connect(self.clean)
         self.bt_autogen.clicked.connect(self.autogen)
         for name in self.servicePattern.getNamesByCategory("STATIC"):
-            self.cb_staticPattern.addItem(name[0])
-        self.cb_staticPattern.activated.connect(lambda : self.scene.setPattern(self.patternFactory.staticPatterns[self.cb_staticPattern.currentText()]))
-        for name in self.patternFactory.periodicPatterns.keys():
-            self.cb_periodicPattern.addItem(name)
-        self.cb_periodicPattern.activated.connect(lambda : self.scene.setPattern(self.patternFactory.periodicPatterns[self.cb_periodicPattern.currentText()]))
-        for name in self.patternFactory.movingPatterns.keys():
-            self.cb_movingPattern.addItem(name)
-        self.cb_movingPattern.activated.connect(lambda : self.scene.setPattern(self.patternFactory.movingPatterns[self.cb_movingPattern.currentText()]))
+            self.cb_staticPattern.addItem(name[1], name[0])
+        self.cb_staticPattern.activated.connect(self.defineStaticPattern)
+        for name in self.servicePattern.getNamesByCategory("PERIODIC"):
+            self.cb_periodicPattern.addItem(name[1], name[0])
+        self.cb_periodicPattern.activated.connect(self.definePeriodicPattern)
+        for name in self.servicePattern.getNamesByCategory("MOVING"):
+            self.cb_movingPattern.addItem(name[1], name[0])
+        self.cb_movingPattern.activated.connect(self.defineMovingPattern)
         self.sb_xcell.setValue(self.config.x_cell)
         self.sb_ycell.setValue(self.config.y_cell)
         self.sb_sizecell.setValue(self.config.size_cell)
@@ -65,13 +63,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         pen = QPen(Qt.red)
         pen.setWidth(10)
         if self.start:
+            logger.info("toggle_start : set Stop")
             self.start = False
             self.rect_statut = self.scene.addRect(0,0,self.config.x_cell*self.config.size_cell,self.config.y_cell*self.config.size_cell,pen)
         else:
+            logger.info("toggle_start : set Start")
             self.start = True
             self.scene.removeItem(self.rect_statut)
 
     def close(self):
+        logger.debug("close : begin closing window")
         origin_state = self.start
         self.start = False
         msgBox = QMessageBox()
@@ -80,15 +81,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         msgBox.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         ret = msgBox.exec_()
         if ret == QMessageBox.Yes:
+            logger.info("close : Close application")
             QApplication.quit()
         else:
+            logger.debug("close : cancel closing window")
             self.start = origin_state
 
     def clean(self):
+        logger.info("clean : reset scene")
         self.scene.clean()
         self.lcd_generation.display(0)
 
     def onSizeCellChange(self):
+        logger.info("onSizeCellChange : cell size changing, redraw scene")
         self.config.size_cell = self.sb_sizecell.value()
         self.scene = GolGraphicScene(self.board, self.config)
         if self.rect_statut:
@@ -98,6 +103,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def onSpeedChange(self):
         self.config.speed = self.sl_speed.value()
         self.timer.setInterval(self.sl_speed.value())
+        logger.info("onSpeedChange : set refresh to :"+str(self.config.speed)+"ms")
 
     def onConfigChanged(self):
         if self.config.x_cell != self.sb_xcell.value() or self.config.y_cell != self.sb_ycell.value():
@@ -105,20 +111,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.config.y_cell = self.sb_ycell.value()
             self.lcd_generation.display(0)
             self.initBoard()
+            logger.info("onConfigChanged : reset sreen size, redraw scene : X=" + str(self.config.x_cell) + " Y="+ str(self.config.y_cell))
 
     def autogen(self):
         self.board.autogen()
         self.scene.refreshScene()
         self.lcd_generation.display(0)
+        logger.info("autogen : randow cell creation on board")
 
     def nextgen(self):
         if self.start:
             self.board.nextgen()
             self.scene.refreshScene()
             self.lcd_generation.display(self.lcd_generation.intValue() + 1)
+            logger.debug("nextgen : calculate next generation et refresh the scene")
 
 
     def keyPressEvent(self, event):
+        logger.info("keyPressEvent : pressed on : "+str(event.key()))
         if event.key() == Qt.Key_P:
             self.toggle_start()
         if event.key() == Qt.Key_A:
@@ -133,11 +143,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.scene = GolGraphicScene(self.board, self.config)
         self.configScene()
         self.scene.refreshScene()
+        logger.info("initBoard : initialize board and draw scene")
 
     def initPreview(self):
         self.scenePreview = QGraphicsScene()
         self.scenePreview.setBackgroundBrush(self.config.inactive_color)
         self.gv_preview.setScene(self.scenePreview)
+        logger.info("initPreview : initialize preview pattern scene")
 
     def configScene(self):
         self.scene.setBackgroundBrush(self.config.inactive_color)
@@ -149,6 +161,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.canvas.setScene(self.scene)
         self.canvas.setFixedWidth(self.config.x_cell * self.config.size_cell)
         self.canvas.setFixedHeight(self.config.y_cell * self.config.size_cell)
+        logger.info("configScene : configuration to draw scene")
+
+    def defineStaticPattern(self):
+        patternId = self.cb_staticPattern.itemData(self.cb_staticPattern.currentIndex())
+        pattern = self.servicePattern.getPatternById(patternId)
+        self.scene.setPattern(pattern)
+        logger.info("Select Static pattern with id = "+str(patternId))
+
+    def definePeriodicPattern(self):
+        patternId = self.cb_periodicPattern.itemData(self.cb_periodicPattern.currentIndex())
+        pattern = self.servicePattern.getPatternById(patternId)
+        self.scene.setPattern(pattern)
+        logger.info("Select Periodic pattern with id = " + str(patternId))
+
+    def defineMovingPattern(self):
+        patternId = self.cb_movingPattern.itemData(self.cb_movingPattern.currentIndex())
+        pattern = self.servicePattern.getPatternById(patternId)
+        self.scene.setPattern(pattern)
+        logger.info("Select Moving pattern with id = " + str(patternId))
 
 if __name__ == '__main__':
     app = QApplication([])

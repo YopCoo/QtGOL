@@ -9,5 +9,5 @@ class ServicePattern:
         return self.dao.getId(id)
     def getPatternByName(self,name):
         pattern = self.dao.PatternByName(name)
-        if pattern.__lenll() == 1:
+        if pattern.__len__() == 1:
             return pattern
