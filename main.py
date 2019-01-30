@@ -34,6 +34,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.bt_quit.clicked.connect(self.close)
         self.bt_start.clicked.connect(self.toggle_start)
         self.bt_reset.clicked.connect(self.onConfigChanged)
+        self.bt_reset.setEnabled(False)
         self.bt_clean.clicked.connect(self.clean)
         self.bt_autogen.clicked.connect(self.autogen)
         for name in self.servicePattern.getNamesByCategory("STATIC"):
@@ -46,7 +47,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.cb_movingPattern.addItem(name[1], name[0])
         self.cb_movingPattern.activated.connect(self.defineMovingPattern)
         self.sb_xcell.setValue(self.config.x_cell)
+        self.sb_xcell.valueChanged.connect(lambda: self.bt_reset.setEnabled(True))
         self.sb_ycell.setValue(self.config.y_cell)
+        self.sb_ycell.valueChanged.connect(lambda: self.bt_reset.setEnabled(True))
         self.sb_sizecell.setValue(self.config.size_cell)
         self.sb_sizecell.valueChanged.connect(self.onSizeCellChange)
         self.sl_speed.setValue(self.config.speed)
@@ -112,6 +115,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.lcd_generation.display(0)
             self.initBoard()
             logger.info("onConfigChanged : reset sreen size, redraw scene : X=" + str(self.config.x_cell) + " Y="+ str(self.config.y_cell))
+        self.bt_reset.setEnabled(False)
 
     def autogen(self):
         self.board.autogen()
