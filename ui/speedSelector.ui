@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>263</width>
-    <height>54</height>
+    <width>109</width>
+    <height>84</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,11 +22,32 @@
     </widget>
    </item>
    <item>
-    <widget class="QSlider" name="horizontalSlider">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+    <widget class="QLabel" name="ind_speed">
+     <property name="text">
+      <string>X gen / sec</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QToolButton" name="btn_lower">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="btn_upper">
+       <property name="text">
+        <string>+</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

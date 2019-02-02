@@ -42,6 +42,12 @@
    <property name="allowedAreas">
     <set>Qt::NoToolBarArea</set>
    </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonIconOnly</enum>
+   </property>
    <property name="floatable">
     <bool>false</bool>
    </property>
@@ -60,9 +66,15 @@
    <addaction name="actionQuit"/>
   </widget>
   <action name="actionstart_pause">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset>
-     <normaloff>NewGui/media-playback-start-symbolic.symbolic.png</normaloff>NewGui/media-playback-start-symbolic.symbolic.png</iconset>
+     <normaloff>asset/start.png</normaloff>asset/start.png</iconset>
    </property>
    <property name="text">
     <string>start/pause</string>
@@ -71,7 +83,7 @@
   <action name="actionSpeed">
    <property name="icon">
     <iconset>
-     <normaloff>NewGui/media-seek-backward-symbolic-rtl.symbolic.png</normaloff>NewGui/media-seek-backward-symbolic-rtl.symbolic.png</iconset>
+     <normaloff>asset/speed.png</normaloff>asset/speed.png</iconset>
    </property>
    <property name="text">
     <string>Speed</string>
@@ -80,7 +92,7 @@
   <action name="actionQuit">
    <property name="icon">
     <iconset>
-     <normaloff>NewGui/application-exit-symbolic.symbolic.png</normaloff>NewGui/application-exit-symbolic.symbolic.png</iconset>
+     <normaloff>asset/exit.png</normaloff>asset/exit.png</iconset>
    </property>
    <property name="text">
     <string>Quit</string>
@@ -92,7 +104,7 @@
   <action name="actionConfig">
    <property name="icon">
     <iconset>
-     <normaloff>NewGui/system-run-symbolic.symbolic.png</normaloff>NewGui/system-run-symbolic.symbolic.png</iconset>
+     <normaloff>asset/config.png</normaloff>asset/config.png</iconset>
    </property>
    <property name="text">
     <string>Config</string>
@@ -101,7 +113,7 @@
   <action name="actionrefresh">
    <property name="icon">
     <iconset>
-     <normaloff>asset/view-refresh-symbolic.symbolic.png</normaloff>asset/view-refresh-symbolic.symbolic.png</iconset>
+     <normaloff>asset/refresh.png</normaloff>asset/refresh.png</iconset>
    </property>
    <property name="text">
     <string>refresh</string>
