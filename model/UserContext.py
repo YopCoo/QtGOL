@@ -15,11 +15,11 @@ class UserContext:
 
     def __str__(self):
         ret="["
-        for attr, val  in self.__dict__.items():
+        for attr, val in self.__dict__.items():
             ret += attr
             ret += "="
             if isinstance(val,QColor):
-                ret += val.name().__str__()+";"
+                ret += val.name().__str__() + ";"
             else:
                 ret += "None;" if val is None else str(val)+";"
         ret += "]"
