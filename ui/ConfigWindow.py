@@ -2,20 +2,23 @@ from util.Log import Log
 from PyQt5.QtWidgets import *
 from PyQt5.Qt import QPalette
 from ui.configSelector import Ui_Dialog as config_dialog
+from service.ServiceUserContext import ServiceUserContext
 
 logger = Log().getLogger(__name__)
 
 
 class ConfigWindow(QDialog, config_dialog):
 
-    def __init__(self, config):
+    def __init__(self):
         super(ConfigWindow, self).__init__()
         logger.info("Begin Initialisation ConfigWindow")
         self.setupUi(self)
         # Services
         self.colorPicker = QColorDialog()
+        self.serviceUc = ServiceUserContext()
         # Object
-        self.config = config
+        self.config = self.serviceUc.getLastUserContext()
+        self.isDefaut = False
         # Widget
         self.colorizedButton()
         self.sb_xcell.setValue(self.config.x_cell)
@@ -27,9 +30,20 @@ class ConfigWindow(QDialog, config_dialog):
         self.btn_inactivecolor.clicked.connect(self.setInactiveColor)
         self.btn_accept.clicked.connect(self.notifyConfig)
         self.btn_cancel.clicked.connect(self.closeConfig)
+        self.btn_defaut.clicked.connect(self.defautConfig)
         # Observer
         self.observers = []
         logger.info("End Initialisation ConfigWindow")
+        # Display Condition
+        if self.serviceUc.getUserContext("LAST_CONFIG") is None:
+            self.btn_defaut.setDisabled(True)
+
+
+    def defautConfig(self):
+        self.config = self.serviceUc.getUserContext("DEFAUT")
+        self.serviceUc.deleteUserContext("LAST_CONFIG")
+        self.isDefaut = True
+        self.notifyConfig()
 
     def addObserver(self,observer):
         logger.info("ConfigWindow addObserver : " + observer.__str__())
@@ -41,12 +55,15 @@ class ConfigWindow(QDialog, config_dialog):
 
     def notifyConfig(self):
         logger.info("sendConfig")
-        self.config.size_cell=self.sb_sizecell.value()
-        self.config.x_cell=self.sb_xcell.value()
-        self.config.y_cell=self.sb_ycell.value()
+        if not self.isDefaut:
+            self.config.size_cell = self.sb_sizecell.value()
+            self.config.x_cell = self.sb_xcell.value()
+            self.config.y_cell = self.sb_ycell.value()
+            self.serviceUc.saveOrUpdateUserContext(self.config, "LAST_CONFIG")
         for observer in self.observers:
             logger.debug("Observer send config : " + self.config.__str__())
             observer.onConfigChanged(self.config)
+        self.isDefaut = False
         self.closeConfig()
 
     def closeConfig(self):

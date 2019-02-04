@@ -1,18 +1,21 @@
 from util.Log import Log
 from PyQt5.QtWidgets import *
 from ui.speedSelector import Ui_Dialog as speed_dialog
+from service.ServiceUserContext import ServiceUserContext
 
 logger = Log().getLogger(__name__)
 
 
 class SpeedWindow(QDialog, speed_dialog):
 
-    def __init__(self,speed):
+    def __init__(self):
         super(SpeedWindow, self).__init__()
         logger.info("Degin Initialisation SpeedWindow")
         self.setupUi(self)
+        # Service
+        self.serviceUc = ServiceUserContext()
         # Object
-        self.speed = speed
+        self.speed = self.serviceUc.getLastUserContext().speed
         self.delta = 50
         self.btn_lower.clicked.connect(self.lowerSpeed)
         self.btn_upper.clicked.connect(self.upperSpeed)
@@ -50,5 +53,5 @@ class SpeedWindow(QDialog, speed_dialog):
     def notifySpeed(self,speed):
         logger.info("SpeedWindow sendSpeed")
         for observer in self.observers:
-            logger.debug("Observer send speed : " + speed.__str__)
+            logger.debug("Observer send speed : " + str(speed))
             observer.onSpeedChange(speed)

@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(284, 165)
+        Dialog.resize(284, 166)
         self.gridLayout = QtWidgets.QGridLayout(Dialog)
         self.gridLayout.setObjectName("gridLayout")
         self.horizontalLayout = QtWidgets.QHBoxLayout()
@@ -49,8 +49,9 @@ class Ui_Dialog(object):
         self.gridLayout.addLayout(self.formLayout, 0, 0, 1, 1)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_2.addItem(spacerItem)
+        self.btn_defaut = QtWidgets.QPushButton(Dialog)
+        self.btn_defaut.setObjectName("btn_defaut")
+        self.horizontalLayout_2.addWidget(self.btn_defaut)
         self.btn_accept = QtWidgets.QPushButton(Dialog)
         self.btn_accept.setObjectName("btn_accept")
         self.horizontalLayout_2.addWidget(self.btn_accept)
@@ -71,6 +72,7 @@ class Ui_Dialog(object):
         self.lb_xcell.setText(_translate("Dialog", "X Cell"))
         self.lb_ycell.setText(_translate("Dialog", "Y Cell"))
         self.lb_sizecell.setText(_translate("Dialog", "Size Cell"))
+        self.btn_defaut.setText(_translate("Dialog", "Defaut"))
         self.btn_accept.setText(_translate("Dialog", "OK"))
         self.btn_cancel.setText(_translate("Dialog", "Cancel"))
 

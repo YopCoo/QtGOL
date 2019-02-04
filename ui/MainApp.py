@@ -23,13 +23,10 @@ class MainApp(QMainWindow, Ui_MainWindow):
         self.servicePattern = ServicePattern()
         self.serviceUserContext = ServiceUserContext()
 
-        self.config = self.serviceUserContext.getUserContext("DEFAUT")
+        self.config = self.serviceUserContext.getLastUserContext()
         # Windows
-        self.speedWindow = SpeedWindow(self.config.speed)
-        self.configWindow = ConfigWindow(self.config)
-        # Subscibe
-        self.configWindow.addObserver(self)
-        self.speedWindow.addObserver(self)
+        self.speedWindow = None
+        self.configWindow = None
 
         self.start = False
         self.board = None
@@ -41,8 +38,8 @@ class MainApp(QMainWindow, Ui_MainWindow):
         self.actionQuit.triggered.connect(self.close)
         self.actionstart_pause.triggered.connect(self.toggle_start)
         self.actionrefresh.triggered.connect(self.autogen)
-        self.actionSpeed.triggered.connect(self.speedWindow.show)
-        self.actionConfig.triggered.connect(self.configWindow.show)
+        self.actionSpeed.triggered.connect(self.openSpeedWindow)
+        self.actionConfig.triggered.connect(self.openConfigWindow)
 
         self.timer = QTimer()
         self.timer.setInterval(self.config.speed)
@@ -50,6 +47,16 @@ class MainApp(QMainWindow, Ui_MainWindow):
         self.timer.start()
         self.show()
         logger.info("End initialisation MainWindow.")
+
+    def openSpeedWindow(self):
+        self.speedWindow = SpeedWindow()
+        self.speedWindow.addObserver(self)
+        self.speedWindow.show()
+
+    def openConfigWindow(self):
+        self.configWindow = ConfigWindow()
+        self.configWindow.addObserver(self)
+        self.configWindow.show()
 
     def toggle_start(self):
         pen = QPen(Qt.red)
@@ -98,8 +105,11 @@ class MainApp(QMainWindow, Ui_MainWindow):
         logger.info("onSpeedChange : set refresh to :"+str(self.config.speed)+"ms")
 
     def onConfigChanged(self, config):
+        reloadBoard = False
+        if (config.x_cell != self.config.x_cell) | (config.y_cell != self.config.y_cell):
+            reloadBoard = True
         self.config = config
-        self.initBoard(False)
+        self.initBoard(reloadBoard)
         logger.info("onConfigChanged : " + self.config.__str__())
 
     def autogen(self):
