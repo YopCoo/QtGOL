@@ -1,7 +1,7 @@
-from util.Log import Log
+from qtgol.util.Log import Log
 from PyQt5.QtWidgets import *
-from ui.speedSelector import Ui_Dialog as speed_dialog
-from service.ServiceUserContext import ServiceUserContext
+from qtgol.ui.speedSelector import Ui_Dialog as speed_dialog
+from qtgol.service.ServiceUserContext import ServiceUserContext
 
 logger = Log().getLogger(__name__)
 

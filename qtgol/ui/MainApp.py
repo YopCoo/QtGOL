@@ -1,13 +1,13 @@
-from util.Log import Log
+from qtgol.util.Log import Log
 from PyQt5.QtWidgets import *
 from PyQt5.Qt import Qt, QPen, QTimer
-from ui.mainwindow import Ui_MainWindow
-from model.Board import Board
-from ui.GolGraphicScene import GolGraphicScene
-from service.ServicePattern import ServicePattern
-from service.ServiceUserContext import ServiceUserContext
-from ui.ConfigWindow import ConfigWindow
-from ui.SpeedWindow import SpeedWindow
+from qtgol.ui.mainwindow import Ui_MainWindow
+from qtgol.model.Board import Board
+from qtgol.ui.GolGraphicScene import GolGraphicScene
+from qtgol.service.ServicePattern import ServicePattern
+from qtgol.service.ServiceUserContext import ServiceUserContext
+from qtgol.ui.ConfigWindow import ConfigWindow
+from qtgol.ui.SpeedWindow import SpeedWindow
 
 
 logger = Log().getLogger(__name__)

@@ -1,5 +1,5 @@
 import unittest
-from data.DaoUserContext import DaoUserContext
+from qtgol.data.DaoUserContext import DaoUserContext
 
 
 class DaoUserContextTest(unittest.TestCase):

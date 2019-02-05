@@ -4,7 +4,7 @@ import logging.config
 
 class Log:
 
-    logging.config.fileConfig("util/log.ini")
+    logging.config.fileConfig("qtgol/util/log.ini")
 
     @staticmethod
     def getLogger(arg):

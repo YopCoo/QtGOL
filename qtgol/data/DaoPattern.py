@@ -1,7 +1,7 @@
-from data.DbConnection import DbConnection
-from model.Cell import Cell
-from model.StateCell import StateCell
-from util.Log import Log
+from qtgol.data.DbConnection import DbConnection
+from qtgol.model.Cell import Cell
+from qtgol.model.StateCell import StateCell
+from qtgol.util.Log import Log
 
 logger = Log().getLogger(__name__)
 

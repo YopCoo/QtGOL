@@ -1,7 +1,7 @@
-from model.Cell import Cell
+from qtgol.model.Cell import Cell
 from random import random
-from model.Generator import Generator
-from model.StateCell import StateCell
+from qtgol.model.Generator import Generator
+from qtgol.model.StateCell import StateCell
 
 class Board:
 

@@ -1,4 +1,4 @@
-from data.DaoPattern import DaoPattern
+from qtgol.data.DaoPattern import DaoPattern
 
 class ServicePattern:
     def __init__(self):

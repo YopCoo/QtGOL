@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import *
-from ui.MainApp import MainApp
-from util.Log import Log
+from qtgol.ui.MainApp import MainApp
+from qtgol.util.Log import Log
 
 logger = Log().getLogger(__name__)
 

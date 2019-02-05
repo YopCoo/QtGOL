@@ -1,6 +1,6 @@
 import sqlite3
 from pathlib import Path
-from util.Log import Log
+from qtgol.util.Log import Log
 
 logger = Log().getLogger(__name__)
 
@@ -8,9 +8,9 @@ logger = Log().getLogger(__name__)
 class DbConnection:
     def __init__(self):
         logger.debug("Ouverture connection à la base de donnée.")
-        self.db_file = Path("gol.db")
+        self.db_file = Path("qtgol/gol.db")
         logger.debug("chemin BDD : " + str(self.db_file.absolute()))
-        self.script = Path("INIT_DB_STRUCT.sql")
+        self.script = Path("qtgol/INIT_DB_STRUCT.sql")
         logger.debug("chemin script init BDD : " + str(self.script.absolute()))
         self.conn = None
 

@@ -1,5 +1,5 @@
-from data.DaoUserContext import DaoUserContext
-from util.Log import Log
+from qtgol.data.DaoUserContext import DaoUserContext
+from qtgol.util.Log import Log
 
 logger = Log().getLogger(__name__)
 

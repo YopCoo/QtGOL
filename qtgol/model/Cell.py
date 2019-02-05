@@ -1,4 +1,4 @@
-from model.StateCell import StateCell
+from qtgol.model.StateCell import StateCell
 
 
 class Cell:

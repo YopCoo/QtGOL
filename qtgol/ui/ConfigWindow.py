@@ -1,8 +1,8 @@
-from util.Log import Log
+from qtgol.util.Log import Log
 from PyQt5.QtWidgets import *
 from PyQt5.Qt import QPalette
-from ui.configSelector import Ui_Dialog as config_dialog
-from service.ServiceUserContext import ServiceUserContext
+from qtgol.ui.configSelector import Ui_Dialog as config_dialog
+from qtgol.service.ServiceUserContext import ServiceUserContext
 
 logger = Log().getLogger(__name__)
 

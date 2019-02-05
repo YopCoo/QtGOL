@@ -1,6 +1,6 @@
-from util.Log import Log
-from data.DbConnection import DbConnection
-from model.UserContext import UserContext
+from qtgol.util.Log import Log
+from qtgol.data.DbConnection import DbConnection
+from qtgol.model.UserContext import UserContext
 from PyQt5.Qt import QColor
 
 logger = Log().getLogger(__name__)
